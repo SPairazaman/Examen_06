@@ -53,6 +53,39 @@ namespace Examen_06.Controllers
             return View();
         }
 
+        public IActionResult Edit(int id)
+        {
+            AlumnoService alumnoService = new AlumnoService();
+             AlumnoModel model = new AlumnoModel();
+            Alumno alumno=alumnoService.BuscarPorId(id);
+
+            model.AlumnoID= alumno.AlumnoID;
+            model.Nombre= alumno.Nombre;
+            model.Apellido= alumno.Apellido;
+            model.FechaNacimiento=alumno.FechaNacimiento;
+            model.CorreoElectronico= alumno.CorreoElectronico;
+            return View(model);
+
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, AlumnoModel model)
+        {
+            AlumnoService alumnoService = new AlumnoService();
+            Alumno alumno=new Alumno();
+
+            alumno.AlumnoID = model.AlumnoID;
+            alumno.Nombre = model.Nombre;
+            alumno.Apellido = model.Apellido;
+            alumno.FechaNacimiento=model.FechaNacimiento;
+            alumno.CorreoElectronico = model.CorreoElectronico;
+
+            alumnoService.Editar(id, alumno);
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult Delete(int id) {
             AlumnoService alumnoService = new AlumnoService();
             Alumno alumno =alumnoService.BuscarPorId(id);
